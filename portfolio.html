@@ -1,0 +1,901 @@
+5<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio – Design & VFX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #080808;
+      --deep: #0d0010;
+      --purple-dark: #1a0030;
+      --purple-mid: #5b21b6;
+      --purple-bright: #a855f7;
+      --purple-glow: #c084fc;
+      --white: #f5f0ff;
+      --muted: #9b8fb0;
+      --card-bg: rgba(30, 0, 50, 0.6);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--purple-bright);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s, opacity 0.2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--purple-glow);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.18s ease, width 0.2s, height 0.2s;
+      opacity: 0.6;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 22px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 500;
+      background: linear-gradient(to bottom, rgba(8,0,16,0.95), transparent);
+      backdrop-filter: blur(4px);
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .logo span { color: var(--purple-bright); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--purple-glow); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 60% 40%, rgba(91,33,182,0.22) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 50% at 80% 80%, rgba(168,85,247,0.1) 0%, transparent 60%),
+                  var(--black);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 820px; }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--purple-bright);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 40px; height: 1px;
+      background: var(--purple-bright);
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -2px;
+      margin-bottom: 28px;
+    }
+    h1 .line2 {
+      -webkit-text-stroke: 1.5px var(--purple-bright);
+      color: transparent;
+      display: block;
+    }
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 44px;
+    }
+    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 15px 36px;
+      background: var(--purple-mid);
+      color: var(--white);
+      border: none; border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: none;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+    .btn-primary:hover { background: var(--purple-bright); }
+    .btn-primary:hover::after { transform: translateX(100%); }
+    .btn-outline {
+      padding: 14px 36px;
+      background: transparent;
+      color: var(--purple-glow);
+      border: 1px solid var(--purple-mid);
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: none;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--purple-bright); color: var(--white); }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--purple-bright), transparent);
+      animation: scrollPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3; transform:scaleY(0.8)} 50%{opacity:1; transform:scaleY(1)} }
+
+    /* SECTIONS SHARED */
+    section { padding: 110px 60px; position: relative; }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--purple-bright);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: '//'; opacity: 0.5; }
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 60px;
+      line-height: 1.05;
+    }
+
+    /* WORK / PORTFOLIO */
+    #work { background: var(--deep); }
+    .upload-zone {
+      border: 1px dashed rgba(168,85,247,0.35);
+      border-radius: 4px;
+      padding: 48px;
+      text-align: center;
+      margin-bottom: 50px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+    .upload-zone:hover {
+      border-color: var(--purple-bright);
+      background: rgba(91,33,182,0.12);
+    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .upload-zone p { color: var(--muted); font-size: 0.9rem; }
+    .upload-zone span { color: var(--purple-glow); font-weight: 500; }
+    .upload-zone input[type="file"] { display: none; }
+    .upload-zone label { cursor: pointer; display: block; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .portfolio-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(168,85,247,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      position: relative;
+      group: true;
+    }
+    .portfolio-card:hover { transform: translateY(-6px); border-color: rgba(168,85,247,0.4); }
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(135deg, #1a0030, #2d0060);
+    }
+    .card-thumb-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, rgba(91,33,182,0.3), rgba(168,85,247,0.1));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .card-body { padding: 20px; }
+    .card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--purple-bright);
+      margin-bottom: 6px;
+    }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .card-desc { color: var(--muted); font-size: 0.85rem; margin-top: 6px; line-height: 1.5; }
+
+    /* VFX / VIDEO SECTION */
+    #vfx { background: var(--black); }
+    .vfx-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .vfx-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(168,85,247,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .vfx-card:hover { border-color: var(--purple-bright); transform: translateY(-4px); }
+    .vfx-card-wide { grid-column: span 2; }
+    .vfx-embed { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+    .vfx-embed-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #0d0020, #1a0040);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px; color: var(--muted); font-size: 0.9rem;
+    }
+    .play-btn {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--purple-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      color: var(--purple-glow);
+      transition: background 0.3s;
+    }
+    .vfx-card:hover .play-btn { background: rgba(168,85,247,0.2); }
+    .vfx-info { padding: 20px; }
+    .vfx-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
+    .vfx-info p { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+
+    /* YOUTUBE */
+    #youtube { background: var(--deep); }
+    .yt-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .yt-info h2 { margin-bottom: 20px; }
+    .yt-info p { color: var(--muted); line-height: 1.8; margin-bottom: 30px; font-size: 1rem; }
+    .yt-stats {
+      display: flex; gap: 40px; margin-bottom: 36px; flex-wrap: wrap;
+    }
+    .yt-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem;
+      color: var(--purple-glow);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .yt-stat-label { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .yt-banner {
+      background: linear-gradient(135deg, rgba(91,33,182,0.4), rgba(168,85,247,0.15));
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 8px;
+      padding: 40px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+    .yt-icon { font-size: 4rem; }
+    .yt-channel-name { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; }
+    .yt-sub { color: var(--muted); font-size: 0.9rem; }
+    .btn-yt {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      background: #c00;
+      color: #fff;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: background 0.3s;
+      cursor: none;
+    }
+    .btn-yt:hover { background: #e60000; }
+
+    /* ABOUT */
+    #about { background: var(--black); }
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-photo {
+      position: relative;
+    }
+    .about-photo-inner {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, rgba(91,33,182,0.5), rgba(168,85,247,0.1));
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      border: 1px solid rgba(168,85,247,0.2);
+    }
+    .about-photo-badge {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      background: var(--purple-mid);
+      padding: 20px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .badge-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; line-height: 1; }
+    .badge-text { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+    .about-text h2 { margin-bottom: 20px; }
+    .about-text p { color: var(--muted); line-height: 1.85; margin-bottom: 20px; font-size: 1rem; }
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px;
+    }
+    .skill-tag {
+      padding: 7px 16px;
+      border: 1px solid rgba(168,85,247,0.3);
+      border-radius: 2px;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple-glow);
+      background: rgba(91,33,182,0.1);
+    }
+
+    /* CONTACT */
+    #contact { background: var(--deep); }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 36px; }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(168,85,247,0.1);
+    }
+    .contact-link:hover { color: var(--white); }
+    .contact-link-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(91,33,182,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .contact-link:hover .contact-link-icon { background: var(--purple-mid); }
+    .contact-form { display: flex; flex-direction: column; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--purple-bright);
+    }
+    .form-group input,
+    .form-group textarea {
+      background: rgba(30,0,50,0.5);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 2px;
+      padding: 14px 16px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--purple-bright); }
+    .form-group textarea { min-height: 120px; }
+    .form-msg {
+      margin-top: 6px; font-size: 0.85rem;
+      color: var(--purple-glow); display: none;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 60px;
+      background: var(--black);
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(168,85,247,0.1);
+      flex-wrap: wrap; gap: 20px;
+    }
+    footer p { color: var(--muted); font-size: 0.8rem; letter-spacing: 1px; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; }
+    .footer-logo span { color: var(--purple-bright); }
+
+    /* PURPLE DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--purple-mid), transparent);
+      opacity: 0.3;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease forwards; }
+    .delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .delay-2 { animation-delay: 0.25s; opacity: 0; }
+    .delay-3 { animation-delay: 0.4s; opacity: 0; }
+    .delay-4 { animation-delay: 0.55s; opacity: 0; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      section { padding: 80px 24px; }
+      #hero { padding: 0 24px; }
+      .vfx-grid { grid-template-columns: 1fr; }
+      .vfx-card-wide { grid-column: span 1; }
+      .yt-wrapper, .about-wrap, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .about-photo-badge { right: 10px; }
+      footer { padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#hero">PORT<span>.</span>FOLIO</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#vfx">VFX</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow fade-up delay-1">video editor and thumbnai desginer</div>
+    <h1 class="fade-up delay-2">
+      Dev<br>
+      <span class="line2">kathal</span>
+    </h1>
+    <p class="hero-desc fade-up delay-3">
+      Crafting immersive designs, stunning VFX, and cinematic video edits that tell stories worth watching. Available for freelance & collaborations.
+    </p>
+    <div class="btn-group fade-up delay-4">
+      <a href="#work" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-outline">Hire Me</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO / DESIGNS -->
+<section id="work">
+  <div class="section-label">Design Work</div>
+  <h2>My Portfolio</h2>
+
+  <!-- Upload Zone -->
+  <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+    <label>
+      <input type="file" id="fileInput" accept="image/*,video/*" multiple/>
+      <div class="upload-icon">📁</div>
+      <p>Drop your designs here or <span>click to upload</span></p>
+      <p style="margin-top:8px; font-size:0.78rem;">Supports: JPG, PNG, GIF, MP4 — Max 50MB per file</p>
+    </label>
+  </div>
+
+  <!-- Sample cards (replace with real work) -->
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="portfolio-card">
+      <div class="card-thumb-placeholder">🎨</div>
+      <div class="card-body">
+        <div class="card-tag">Graphic Design</div>
+        <div class="card-title">Brand Identity – Project A</div>
+        <div class="card-desc">Logo, typography, and visual system for a creative agency.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="card-thumb-placeholder">✨</div>
+      <div class="card-body">
+        <div class="card-tag">Motion Design</div>
+        <div class="card-title">Intro Animation</div>
+        <div class="card-desc">Cinematic title sequence with particle effects and color grading.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="card-thumb-placeholder">🖼️</div>
+      <div class="card-body">
+        <div class="card-tag">Thumbnail Design</div>
+        <div class="card-title">YouTube Thumbnail Pack</div>
+        <div class="card-desc">Eye-catching thumbnails designed for maximum click-through rate.</div>
+      </div>
+    </div>
+  
+    </div>
+    <div class="portfolio-card">
+      <div class="card-thumb-placeholder">🎬</div>
+      <div class="card-body">
+        <div class="card-tag">Video Edit</div>
+        <div class="card-title">Short Film – Cut</div>
+        <div class="card-desc">Fast-paced edit with sync cuts, color grade, and SFX design.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="card-thumb-placeholder">💜</div>
+      <div class="card-body">
+        <div class="card-tag">UI Design</div>
+        <div class="card-title">Dark UI Kit</div>
+        <div class="card-desc">Component library built on purple-black aesthetic for apps.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VFX / VIDEO EDITING -->
+<section id="vfx">
+  <div class="section-label">VFX & Editing</div>
+  <h2>Video Work</h2>
+  <div class="vfx-grid">
+    <!-- Replace src with real YouTube/Vimeo embeds -->
+    <div class="vfx-card vfx-card-wide">
+      <div class="vfx-embed-placeholder">
+        <div class="play-btn">▶</div>
+        <span>Featured VFX Reel — Paste YouTube embed here</span>
+      </div>
+      <div class="vfx-info">
+        <h3>VFX Showreel 2024</h3>
+        <p>Compositing, motion tracking, particle systems, and cinematic color grading.</p>
+      </div>
+    </div>
+    <div class="vfx-card">
+      <div class="vfx-embed-placeholder">
+        <div class="play-btn">▶</div>
+        <span>Video Edit #1</span>
+      </div>
+      <div class="vfx-info">
+        <h3>Cinematic Short</h3>
+        <p>Narrative edit with custom sound design and grade.</p>
+      </div>
+    </div>
+    <div class="vfx-card">
+      <div class="vfx-embed-placeholder">
+        <div class="play-btn">▶</div>
+        <span>Video Edit #2</span>
+      </div>
+      <div class="vfx-info">
+        <h3>Motion Graphics</h3>
+        <p>Kinetic typography and 2D/3D composite work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- YOUTUBE -->
+<section id="youtube">
+  <div class="yt-wrapper">
+    <div class="yt-info">
+      <div class="section-label">YouTube</div>
+      <h2>My Channel</h2>
+      <p>
+        I share tutorials, behind-the-scenes breakdowns, and creative processes
+        on my YouTube channel — covering VFX, video editing, design tips, and more.
+      </p>
+      <div class="yt-stats">
+        <div>
+          <div class="yt-stat-num">0K+</div>
+          <div class="yt-stat-label">Subscribers</div>
+        </div>
+        <div>
+          <div class="yt-stat-num">0+</div>
+          <div class="yt-stat-label">Videos</div>
+        </div>
+        <div>
+          <div class="yt-stat-num">0K</div>
+          <div class="yt-stat-label">Views</div>
+        </div>
+      </div>
+      <!-- Replace # with your actual YouTube URL -->
+      <a href="https://youtube.com" target="_blank" class="btn-yt">▶ &nbsp; Subscribe Now</a>
+    </div>
+    <div class="yt-banner">
+      <div class="yt-icon">📺</div>
+      <div class="yt-channel-name">Your Channel Name</div>
+      <div class="yt-sub">Design • VFX • Video Editing Tutorials</div>
+      <a href="https://youtube.com" target="_blank" class="btn-yt" style="margin-top:8px">Open Channel</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-photo">
+      <div class="about-photo-inner">🧑‍🎨</div>
+      <div class="about-photo-badge">
+        <div class="badge-num">3+</div>
+        <div class="badge-text">Years Exp.</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">About Me</div>
+      <h2>Who I Am</h2>
+      <p>
+        I'm a passionate designer and VFX artist based in India, obsessed with creating
+        visuals that blend technical precision with raw creativity. My work spans graphic
+        design, motion graphics, VFX compositing, and video editing.
+      </p>
+      <p>
+        Whether it's a cinematic short, a brand identity, or a punchy YouTube thumbnail —
+        I approach every project with the same obsessive attention to detail and
+        a love for the craft.
+      </p>
+      <p>
+        When I'm not at my workstation, I'm creating tutorials and sharing my workflow on
+        YouTube, hoping to inspire the next generation of creatives.
+      </p>
+      <div class="skills-list">
+        <span class="skill-tag">Photoshop</span>
+        <span class="skill-tag">After Effects</span>
+        <span class="skill-tag">Premiere Pro</span>
+        <span class="skill-tag">DaVinci Resolve</span>
+        <span class="skill-tag">Blender</span>
+        <span class="skill-tag">Illustrator</span>
+        <span class="skill-tag">Color Grading</span>
+        <span class="skill-tag">VFX Compositing</span>
+        <span class="skill-tag">Motion Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <div class="section-label">Contact</div>
+      <h2>Let's Work<br>Together</h2>
+      <p>
+        Have a project in mind? Whether it's a brand identity, VFX work, or video
+        editing — I'd love to hear about it. Drop me a message and I'll get back to you.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:your@email.com" class="contact-link">
+          <div class="contact-link-icon">✉️</div>
+          your@email.com
+        </a>
+        <a href="https://instagram.com" target="_blank" class="contact-link">
+          <div class="contact-link-icon">📸</div>
+          @yourinstagram
+        </a>
+        <a href="https://youtube.com" target="_blank" class="contact-link">
+          <div class="contact-link-icon">▶️</div>
+          YouTube Channel
+        </a>
+        <a href="https://behance.net" target="_blank" class="contact-link">
+          <div class="contact-link-icon">🎨</div>
+          Behance Portfolio
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="fname" placeholder="John Doe"/>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="femail" placeholder="john@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" id="fsubject" placeholder="Project inquiry, Collab, etc."/>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="fmessage" placeholder="Tell me about your project..."></textarea>
+        </div>
+        <button class="btn-primary" id="sendBtn" onclick="handleSend()" style="width:100%; text-align:center;">Send Message</button>
+        <p class="form-msg" id="formMsg">✓ Message sent! I'll reply soon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">PORT<span>.</span>FOLIO</span>
+  <p>© 2025 · Designed & Built by You · All Rights Reserved</p>
+  <p style="font-size:0.75rem;">Made with 💜 in India</p>
+</footer>
+
+<script>
+  // CUSTOM CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = (rx - 18)+'px';
+    ring.style.top  = (ry - 18)+'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button, .portfolio-card, .vfx-card, .upload-zone').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; ring.style.width = '60px'; ring.style.height = '60px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.width = '36px'; ring.style.height = '36px'; });
+  });
+
+  // FILE UPLOAD — show previews in portfolio grid
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    const grid = document.getElementById('portfolioGrid');
+    files.forEach(file => {
+      const url = URL.createObjectURL(file);
+      const card = document.createElement('div');
+      card.className = 'portfolio-card';
+      const isVideo = file.type.startsWith('video/');
+      card.innerHTML = `
+        ${isVideo
+          ? `<video class="card-thumb" src="${url}" muted loop preload="metadata"></video>`
+          : `<img class="card-thumb" src="${url}" alt="${file.name}"/>`
+        }
+        <div class="card-body">
+          <div class="card-tag">${isVideo ? 'Video' : 'Design'}</div>
+          <div class="card-title">${file.name.replace(/\.[^.]+$/, '')}</div>
+          <div class="card-desc">Uploaded work — ${(file.size/1024/1024).toFixed(1)} MB</div>
+        </div>`;
+      if (isVideo) {
+        card.querySelector('video').addEventListener('mouseenter', v => v.target.play());
+        card.querySelector('video').addEventListener('mouseleave', v => v.target.pause());
+      }
+      grid.prepend(card);
+    });
+  });
+
+  // DRAG & DROP
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = 'var(--purple-bright)'; });
+  zone.addEventListener('dragleave', () => { zone.style.borderColor = ''; });
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.style.borderColor = '';
+    const dt = new DataTransfer();
+    Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+    document.getElementById('fileInput').files = dt.files;
+    document.getElementById('fileInput').dispatchEvent(new Event('change'));
+  });
+
+  // CONTACT FORM MOCK SUBMIT
+  function handleSend() {
+    const n = document.getElementById('fname').value;
+    const em = document.getElementById('femail').value;
+    const msg = document.getElementById('fmessage').value;
+    if (!n || !em || !msg) { alert('Please fill in all required fields.'); return; }
+    const btn = document.getElementById('sendBtn');
+    btn.textContent = 'Sending...';
+    setTimeout(() => {
+      btn.textContent = 'Send Message';
+      document.getElementById('formMsg').style.display = 'block';
+      document.getElementById('fname').value = '';
+      document.getElementById('femail').value = '';
+      document.getElementById('fsubject').value = '';
+      document.getElementById('fmessage').value = '';
+      setTimeout(() => document.getElementById('formMsg').style.display = 'none', 4000);
+    }, 1200);
+  }
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'none'; }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.portfolio-card, .vfx-card, .yt-banner, .about-photo').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(28px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
